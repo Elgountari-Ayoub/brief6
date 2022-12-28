@@ -35,7 +35,7 @@
 
     <title>ElectroMerce</title>
   </head>
-  <body class="">
+  <body>
     <nav class="bg-white border-gray-200 dark:bg-gray-900">
       <div
         class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2.5"
@@ -192,52 +192,74 @@
       </div>
     </nav>
 
-    <!-- #################### -->
-    <div class="w-full overflow-x-auto px-8">
-      <table class="table-auto w-full">
-        <thead>
-          <tr>
-            <th class="px-4 py-2">ID</th>
-            <th class="px-4 py-2">Reference</th>
-            <th class="px-4 py-2">Description</th>
-            <th class="px-4 py-2">Bar Code</th>
-            <th class="px-4 py-2">Photo</th>
-            <th class="px-4 py-2">Purchase Price</th>
-            <th class="px-4 py-2">Final Price</th>
-            <th class="px-4 py-2">Offer Price</th>
-            <th class="px-4 py-2">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="border px-4 py-2">1</td>
-            <td class="border px-4 py-2">123456</td>
-            <td class="border px-4 py-2">Product 1</td>
-            <td class="border px-4 py-2">9876543210</td>
-            <td class="border px-4 py-2">
-              <img
-                src="/docs/images/products/product-1.jpg"
-                alt="Product 1"
-                class="h-8 w-8"
-              />
-            </td>
-            <td class="border px-4 py-2">$10.00</td>
-            <td class="border px-4 py-2">$15.00</td>
-            <td class="border px-4 py-2">$12.50</td>
-            <td class="border px-4 py-2">
-              <button class="bg-blue-500 text-white py-2 px-4 rounded-full">
-                Edit
-              </button>
-              <button class="bg-red-500 text-white py-2 px-4 rounded-full">
-                Delete
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="max-w-xl mx-auto py-12">
+      <h2 class="text-2xl font-bold mb-6">Confirm Your Order</h2>
+      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+            Name
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="name"
+            type="text"
+            placeholder="John Smith"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+            Email
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="email"
+            type="email"
+            placeholder="john@example.com"
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="address"
+          >
+            Shipping Address
+          </label>
+          <textarea
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="address"
+            placeholder="123 Main St, Anytown, USA 12345"
+          ></textarea>
+        </div>
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="card-number"
+          >
+            Credit Card Number
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="card-number"
+            type="text"
+            placeholder="1111 2222 3333 4444"
+          />
+        </div>
+        <div class="flex items-center justify-between">
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
+          >
+            Confirm Order
+          </button>
+          <a
+            class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+            href="#"
+          >
+            Cancel
+          </a>
+        </div>
+      </form>
     </div>
-
-    <!-- #################### -->
 
     <footer class="bg-white dark:bg-gray-900">
       <div class="grid grid-cols-2 gap-8 py-8 px-6 md:grid-cols-4">
