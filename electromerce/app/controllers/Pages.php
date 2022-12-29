@@ -53,7 +53,7 @@ class Pages extends Controller
     // Load about view
     $this->view('pages/register', $data);
   }
-  public function login()
+  public function products()
   {
     //Set Data
     $data = [
@@ -61,6 +61,6 @@ class Pages extends Controller
     ];
 
     // Load about view
-    $this->view('pages/login', $data);
+    $this->view('pages/products', $data);
   }
 }

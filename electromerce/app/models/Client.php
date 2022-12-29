@@ -9,6 +9,7 @@ class Client extends User
   // Add User / Register
   public function register($data)
   {
+
     // Prepare Query
     $this->db->query('INSERT INTO client (fullName,	phoneNumber,	adress,	city,	email,	password	) 
       VALUES  (:fullName,	:phoneNumber,	:adress,	:city,	:email,	:password)');

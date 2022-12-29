@@ -12,6 +12,11 @@ class User
     $this->user = $user;
   }
 
+  public function getUserType()
+  {
+    return $this->user;
+  }
+
   public function index()
   {
     redirect('pages/index');
@@ -27,6 +32,7 @@ class User
 
     //Check Rows
     if ($this->db->rowCount() > 0) {
+      // echo $user;
       return true;
     } else {
       return false;
@@ -41,6 +47,8 @@ class User
     $this->db->bind(':email', $email);
 
     $row = $this->db->single();
+
+
 
     $hashed_password = $row->password;
     if (password_verify($password, $hashed_password)) {

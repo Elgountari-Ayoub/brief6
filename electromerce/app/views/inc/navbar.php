@@ -99,14 +99,24 @@
             </div>
           </div>
         </div>
-
-        <a href="pages/login" class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">Log in</a>
-        <a href="pages/register"
-          class="text-sm font-medium dark:text-blue-500 hover:underline bg-blue-800 text-white p-1.5 rounded">Sing
-          up</a>
       </div>
+
+      <?php if (isset($_SESSION['user_id'])) { ?>
+      <a href="<?php echo URLROOT ?>/users/logout"
+        class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">log out</a>
+      <?php } else { ?>
+      <a href="<?php echo URLROOT ?>/users/login"
+        class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">Log in</a>
+      <a href="<?php echo URLROOT ?>/users/register"
+        class="text-sm font-medium dark:text-blue-500 hover:underline bg-blue-800 text-white p-1.5 rounded">Sing
+        up</a>
+      <?php } ?>
+
     </div>
+  </div>
 </nav>
+
+
 <nav class="flex flex-wrap overflow-x-auto flex-column bg-gray-50 dark:bg-gray-700">
   <div class="max-w-screen-xl px-4 py-3 mx-auto md:px-6">
     <div class="flex items-center">
