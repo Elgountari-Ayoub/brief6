@@ -63,4 +63,14 @@ class Pages extends Controller
     // Load about view
     $this->view('pages/products', $data);
   }
+  public function orders()
+  {
+    //Set Data
+    $data = [
+      'version' => '1.0.0'
+    ];
+
+    // Load about view
+    $this->view('pages/orders', $data);
+  }
 }

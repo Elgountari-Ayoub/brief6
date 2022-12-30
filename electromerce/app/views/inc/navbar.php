@@ -121,31 +121,34 @@
   <div class="max-w-screen-xl px-4 py-3 mx-auto md:px-6">
     <div class="flex items-center">
       <ul class="flex flex-row mt-0 mr-6 space-x-8 text-sm font-medium">
-        <li>
-          <a href="index.html" class="text-gray-900 dark:text-white hover:underline hover:text-blue-800"
-            aria-current="page">Home</a>
+        <li></li>
+        <a href="<?php echo URLROOT ?>/pages/index"
+          class="text-gray-900 dark:text-white hover:underline hover:text-blue-800" aria-current="page">Home</a>
         </li>
         <li>
-          <a href="products.html" class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Products</a>
+          <a href="<?php echo URLROOT ?>/pages/products"
+            class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Products</a>
+        </li>
+        <li></li>
+        <a href="<?php echo URLROOT ?>/pages/about"
+          class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">About</a>
+        </li>
+        <li></li>
+        <a href="<?php echo URLROOT ?>/pages/contact"
+          class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Contact
+          Us</a>
         </li>
         <li>
-          <a href="about.html" class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">About</a>
-        </li>
-        <li>
-          <a href="contact.html" class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Contact
-            Us</a>
-        </li>
-        <li>
-          <a href="productsAdmin.html"
+          <a href="<?php echo URLROOT ?>/products/index"
             class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">ProdsManagement</a>
         </li>
         <li>
-          <a href="category.html"
+          <a href="<?php echo URLROOT ?>/categories/index"
             class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Categories</a>
         </li>
         <li>
-          <a href="ordersManagement.html"
-            class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">ordersManagement</a>
+          <a href="<?php echo URLROOT ?>/pages/orders"
+            class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Orders</a>
         </li>
       </ul>
     </div>
