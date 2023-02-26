@@ -48,8 +48,6 @@ class User
 
     $row = $this->db->single();
 
-
-
     $hashed_password = $row->password;
     if (password_verify($password, $hashed_password)) {
       return $row;
@@ -68,5 +66,15 @@ class User
     $row = $this->db->single();
 
     return $row;
+  }
+  public function isAdmin()
+  {
+    // If logged in, redirect to posts
+    if (isset($_SESSION['user_id'])) {
+      if ($_SESSION['user_type'] === 'Admin') {
+        return true;
+      }
+    }
+    return false;
   }
 }

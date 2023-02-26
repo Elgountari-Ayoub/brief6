@@ -1,4 +1,5 @@
-<nav class="hidden navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+
+<nav class="hidden navbar navbar-expand-lg navbar-dark bg-dark mb-3 ">
   <div class="container">
     <a class="navbar-brand" href="#"><?php echo SITENAME; ?></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -51,11 +52,11 @@
           <i class="fa-solid fa-cart-shopping text-blue-800 text-xl pointer-events-auto"></i>
         </button>
         <!-- Dropdown menu -->
-        <div id="dropdown"
+        <!-- <div id="dropdown"
           class="group/item group/edit invisible group-hover/item:visible z-10 w-64 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
           <div class="container mx-auto py-8 px-4">
             <div class="flex flex-col items-center h-64 overflow-scroll overflow-x-hidden">
-              <div class="w-full mb-4">
+              <div class="w-full mb-4"> -->
                 <!-- <div class="bg-white rounded-lg shadow">
                   <div class="flex items-center mb-4 w-full">
                     <img class="w-16 h-16 rounded-full mr-8"
@@ -95,10 +96,10 @@
                   </div>
                 </div>
               </div> -->
-              </div>
+              <!-- </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <?php if (isset($_SESSION['user_id'])) { ?>
@@ -121,36 +122,46 @@
   <div class="max-w-screen-xl px-4 py-3 mx-auto md:px-6">
     <div class="flex items-center">
       <ul class="flex flex-row mt-0 mr-6 space-x-8 text-sm font-medium">
-        <li></li>
+        <li>
         <a href="<?php echo URLROOT ?>/pages/index"
           class="text-gray-900 dark:text-white hover:underline hover:text-blue-800" aria-current="page">Home</a>
         </li>
         <li>
           <a href="<?php echo URLROOT ?>/pages/products"
-            class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Products</a>
-        </li>
-        <li></li>
-        <a href="<?php echo URLROOT ?>/pages/about"
-          class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">About</a>
-        </li>
-        <li></li>
-        <a href="<?php echo URLROOT ?>/pages/contact"
-          class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Contact
-          Us</a>
+          class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Products</a>
         </li>
         <li>
+          <a href="<?php echo URLROOT ?>/pages/orders/index"
+            class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Orders</a>
+        </li>
+        <!-- <li>
+        <a href="<?php //echo URLROOT ?>/pages/about"
+          class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">About</a>
+        </li>
+        <li>
+        <a href="<?php //echo URLROOT ?>/pages/contact"
+          class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Contact
+          Us</a>
+        </li> -->
+        <li>
           <a href="<?php echo URLROOT ?>/products/index"
-            class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">ProdsManagement</a>
+            class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">ProdsManag</a>
         </li>
         <li>
           <a href="<?php echo URLROOT ?>/categories/index"
             class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Categories</a>
         </li>
         <li>
-          <a href="<?php echo URLROOT ?>/pages/orders"
-            class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Orders</a>
+          <a href="<?php echo URLROOT ?>/orders/index"
+            class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">OrdersManag</a>
+        </li>
+        <li>
+          <a href="<?php echo URLROOT ?>/pages/clients"
+            class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Clients</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
+
+</header>

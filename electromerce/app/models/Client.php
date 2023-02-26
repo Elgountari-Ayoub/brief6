@@ -29,4 +29,10 @@ class Client extends User
       return false;
     }
   }
+
+  public function getClients(){
+    $this->db->query("SELECT * from client");
+    $clients = $this->db->resultset();
+    return $clients;
+  }
 }

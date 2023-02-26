@@ -26,4 +26,34 @@ class Controller
       die('View does not exist');
     }
   }
+
+  public function isAdmin()
+  {
+    // If logged in, redirect to posts
+    if (isset($_SESSION['user_id'])) {
+      if ($_SESSION['user_type'] === 'Admin') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+    // Check Logged In
+    public function isLoggedIn()
+    {
+      if (isset($_SESSION['user_id'])) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    public function isClient()
+    {
+      if (isset($_SESSION['user_id'])) {
+        if ($_SESSION['user_type'] === 'Client') {
+          return true;
+        }
+      }
+      return false;
+    }
 }

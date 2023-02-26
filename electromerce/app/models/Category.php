@@ -8,7 +8,7 @@ class Category
     $this->db = new Database;
   }
 
-  // Get All  Category
+  // Get All  Categories
   public function getCategories()
   {
     $this->db->query("SELECT * FROM category");
@@ -21,6 +21,15 @@ class Category
   {
     $this->db->query("SELECT * FROM category WHERE id = :id");
     $this->db->bind(':id', $id);
+    $row = $this->db->single();
+    return $row;
+  }
+  // Get Post By ID
+  public function getCategoryByProduct($id)
+  {
+    $this->db->query("SELECT * FROM category c, product p WHERE p.idCat = c.id");
+    // $this->db->bind(':idCat', $id);
+    // die('gg');
     $row = $this->db->single();
     return $row;
   }

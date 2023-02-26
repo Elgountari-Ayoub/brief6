@@ -14,7 +14,7 @@
       strive to make shopping with us a hassle-free and enjoyable experience.
     </p>
     <div class="flex items-center mb-4">
-      <img src="/docs/images/about-image-2.jpg" alt="Our team at the electronic store"
+      <img src="<?php echo URLROOT ?>/public/docs/images/about-image-1.jpg" alt="Our team at the electronic store"
         class="w-32 h-32 rounded-full mr-4" />
       <div class="text-gray-700">
         <h3 class="text-xl font-bold mb-2">Meet Our Team</h3>
@@ -26,7 +26,8 @@
       </div>
     </div>
     <div class="flex items-center mb-4">
-      <img src="/docs/images/about-image-1.jpg" alt="Our store interior" class="w-32 h-32 rounded-full mr-4" />
+      <img src="<?php echo URLROOT ?>/public/docs/images/about-image-2.jpg" alt="Our store interior"
+        class="w-32 h-32 rounded-full mr-4" />
       <div class="text-gray-700">
         <h3 class="text-xl font-bold mb-2">Visit Our Store</h3>
         <p>
@@ -38,7 +39,8 @@
       </div>
     </div>
     <div class="flex items-center mb-4">
-      <img src="/docs/images/about-image-3.jpg" alt="Our shipping process" class="w-32 h-32 rounded-full mr-4" />
+      <img src="<?php echo URLROOT ?>/public/docs/images/about-image-3.jpg" alt="Our shipping process"
+        class="w-32 h-32 rounded-full mr-4" />
       <div class="text-gray-700">
         <h3 class="text-xl font-bold mb-2">Fast and Reliable Shipping</h3>
         <p>

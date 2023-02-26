@@ -65,7 +65,6 @@ class Categories extends Controller
     $this->view('posts/show', $data);
   }
 
-
   public function add()
   {
     if (!$this->isAdmin()) {
@@ -84,7 +83,6 @@ class Categories extends Controller
         'user_id' => $_SESSION['user_id'],
         'name' => trim($_POST['name']),
         'description' => trim($_POST['description']),
-
 
         'user_id_err' => '',
         'name_err' => '',
@@ -108,7 +106,7 @@ class Categories extends Controller
         //Execute
         if ($this->categoryModel->addCategory($data)) {
           // Redirect to login
-          flash('post_added', 'Post Added');
+          flash('cate_added', 'Category Added');
           redirect('categories/index');
         } else {
           die('Something went wrong');
@@ -118,6 +116,7 @@ class Categories extends Controller
         $this->view('categories/add', $data);
       }
     } else {
+      // Not Post
       $data = [
         'user_id_err' => '',
         'name_err' => '',
@@ -156,7 +155,7 @@ class Categories extends Controller
       if (empty($data['title_err']) && empty($data['body_err'])) {
         // Validation passed
         //Execute
-        if ($this->postModel->updatePost($data)) {
+        if ($this->categoryModel->updatePost($data)) {
           // Redirect to login
           flash('post_message', 'Post Updated');
           redirect('posts');
@@ -169,7 +168,7 @@ class Categories extends Controller
       }
     } else {
       // Get post from model
-      $post = $this->postModel->getPostById($id);
+      $post = $this->categoryModel->getPostById($id);
 
       // Check for owner
       if ($post->user_id != $_SESSION['user_id']) {
@@ -199,18 +198,18 @@ class Categories extends Controller
         die('Something went wrong');
       }
     } else {
-      redirect('posts');
+      redirect('products');
     }
   }
 
-  public function isAdmin()
-  {
-    // If logged in, redirect to posts
-    if (isset($_SESSION['user_id'])) {
-      if ($_SESSION['user_type'] === 'Admin') {
-        return true;
-      }
-    }
-    return false;
-  }
+  // public function isAdmin()
+  // {
+  //   // If logged in, redirect to posts
+  //   if (isset($_SESSION['user_id'])) {
+  //     if ($_SESSION['user_type'] === 'Admin') {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 }

@@ -1,11 +1,11 @@
 <?php
 /* 
-   *  PDO DATABASE CLASS
-   *  Connects Database Using PDO
-	 *  Creates Prepeared Statements
-	 * 	Binds params to values
-	 *  Returns rows and results
-   */
+ *  PDO DATABASE CLASS
+ *  Connects Database Using PDO
+ *  Creates Prepeared Statements
+ * 	Binds params to values
+ *  Returns rows and results
+ */
 class Database
 {
 	private $host = DB_HOST;
@@ -29,7 +29,7 @@ class Database
 		// Create a new PDO instanace
 		try {
 			$this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
-		}		// Catch any errors
+		} // Catch any errors
 		catch (PDOException $e) {
 			$this->error = $e->getMessage();
 		}
@@ -44,6 +44,7 @@ class Database
 	// Bind values
 	public function bind($param, $value, $type = null)
 	{
+		// echo($value).'<br>';
 		if (is_null($type)) {
 			switch (true) {
 				case is_int($value):
@@ -60,6 +61,11 @@ class Database
 			}
 		}
 		$this->stmt->bindValue($param, $value, $type);
+	}
+
+	public function getStmt()
+	{
+		return  "<pre>" . var_dump( $this->stmt->debugDumpParams()) . "</pre>";
 	}
 
 	// Execute the prepared statement

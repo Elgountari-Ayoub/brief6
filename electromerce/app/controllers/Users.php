@@ -3,6 +3,7 @@
 // Users controller
 class Users extends Controller
 {
+
   private $adminModel;
   private $clientModel;
   public function __construct()
@@ -26,7 +27,7 @@ class Users extends Controller
     // Check if POST
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       // Sanitize POST
-      $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
       $data = [
         'fullName' => trim($_POST['fullName']),
@@ -102,12 +103,12 @@ class Users extends Controller
         empty($data['confirm_password_err'])
       ) {
         // SUCCESS - Proceed to insert
-
         // Hash Password
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
         //Execute
         if ($this->clientModel->register($data)) {
+
           // Redirect to login
           flash('register_success', 'You are now registered and can log in');
           redirect('users/login');
@@ -148,17 +149,18 @@ class Users extends Controller
 
   public function login()
   {
+
     // Check if logged in
 
-    if ($this->isLoggedIn()) {
-      redirect('pages/index');
-    }
+    // if ($this->isLoggedIn()) {
+    //   redirect('pages/index');
+    // }
 
     // Check if POST
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       // Sanitize POST
-      $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
       $data = [
         'email' => trim($_POST['email']),
@@ -171,7 +173,9 @@ class Users extends Controller
       if (empty($data['email'])) {
         $data['email_err'] = 'Please enter email.';
       }
-
+      if (empty($data['password'])) {
+        $data['password_err'] = 'Please enter password.';
+      }
 
       // Check for user
       if ($this->adminModel->findUserByEmail($data['email'])) {
@@ -180,7 +184,7 @@ class Users extends Controller
         if (empty($data['email_err']) && empty($data['password_err'])) {
           // Check and set logged in user
           $loggedInAdmin = $this->adminModel->login($data['email'], $data['password']);
-          $userType = $this->adminModel->getUserType();
+          $userType = $this->adminModel->getUserType(); // return Admin
           if ($loggedInAdmin) {
             // User Authenticated!
             $this->createUserSession($loggedInAdmin, $userType);
@@ -214,8 +218,9 @@ class Users extends Controller
         }
       } else {
         // No User
-        die("not registered");
+        // die("not registered");
         $data['email_err'] = 'This email is not registered.';
+        $this->view('users/login', $data);
       }
     } else {
       // If NOT a POST
@@ -227,7 +232,6 @@ class Users extends Controller
         'email_err' => '',
         'password_err' => '',
       ];
-
       // Load View
       $this->view('users/login', $data);
     }
@@ -236,17 +240,19 @@ class Users extends Controller
   // Create Session With User Info
   public function createUserSession($user, $userType)
   {
-    // echo "<pre>";
-    // var_dump($user);
-    // echo "<pre>";
     $_SESSION['user_id'] = $user->id;
     $_SESSION['user_email'] = $user->email;
     $_SESSION['user_type'] = $userType;
     if ($userType === 'Client') {
-
-      redirect('pages/products');
+      redirect('pages/index');
+      return true;
     }
-    redirect('products/index');
+    elseif ($userType === 'Admin'){
+      redirect('products/index');
+      return true;
+    }else {
+      return false;
+    }
   }
 
   // Logout & Destroy Session
@@ -268,5 +274,24 @@ class Users extends Controller
     } else {
       return false;
     }
+  }
+  public function isAdmin()
+  {
+    if (isset($_SESSION['user_id'])) {
+      if ($_SESSION['user_type'] === 'Admin') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public function isClient()
+  {
+    if (isset($_SESSION['user_id'])) {
+      if ($_SESSION['user_type'] === 'Client') {
+        return true;
+      }
+    }
+    return false;
   }
 }
