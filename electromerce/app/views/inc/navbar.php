@@ -103,8 +103,9 @@
       </div>
 
       <?php if (isset($_SESSION['user_id'])) { ?>
+        Welcome<span class="font-bold "> <?php echo $_SESSION['user_name']?></span>😊
       <a href="<?php echo URLROOT ?>/users/logout"
-        class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">log out</a>
+        class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline bg-red-500 text-white py-2 px-2 rounded-full my-4">log out</a>
       <?php } else { ?>
       <a href="<?php echo URLROOT ?>/users/login"
         class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">Log in</a>
@@ -131,7 +132,7 @@
           class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Products</a>
         </li>
         <li>
-          <a href="<?php echo URLROOT ?>/pages/orders/index"
+          <a href="<?php echo URLROOT ?>/orders/index"
             class="text-gray-900 dark:text-white hover:underline hover:text-blue-800">Orders</a>
         </li>
         <!-- <li>

@@ -4,6 +4,7 @@ class Orders extends Controller
     public $productModel;
     public $categoryModel;
     public $orderModel;
+    public $orderProductModel;
     public $adminModel;
     public $clientModel;
     public function __construct()
@@ -18,6 +19,7 @@ class Orders extends Controller
         //Load Models
         $this->productModel = $this->model('Product');
         $this->orderModel = $this->model('Order');
+        $this->orderProductModel = $this->model('orderproduct');
         // die("die");
         $this->adminModel = $this->model('Admin');
         $this->clientModel = $this->model('Client');
@@ -45,31 +47,69 @@ class Orders extends Controller
             ];
             $this->view('orders/index', $data);
             return;
-        }
-        //Set Data
-        $data = [];
-        // Load homepage/index view
-        $this->view('pages/index', $data);
-    }
+        } elseif ($this->isClient()) {
+            $clientId = $_SESSION['user_id'];
+            $activeOrder = [];
+            // echo "<pre>";
+            // var_dump($this->orderModel->getActiveOrder($clientId));
+            // echo "</pre>";
+            // die("diee");
+            // Check if we have any active Order for the actual Client
+            if ($this->orderModel->getActiveOrder($clientId)) {
+                $activeOrder = $this->orderModel->getActiveOrder($clientId)[0];
+            } else {
+                //Set Data
+                $data = [
+                    'products' => array(),
+                    'total' => 0,
+                ];
+                // Load Orders/index view
+                $this->view('orders/index', $data);  
+            }
+            // Get the orderProduct rows
+            $orderProduct = $this->orderProductModel->getOrderProductByOrderId($activeOrder->id);
 
-    public function productDetails($id)
-    {
-        // die("somthing wrong");
-        if ($this->isLoggedIn()) {
-            $product = $this->productModel->getProductById($id);
-            $data = [];
-            $data['product'] = $product;
-            $data['catName'] = $this->productModel->getCategoryNameByProductId($id);
-            $this->view('products/productDetails', $data);
+            $total = 0;
+            // Go trought all the orderProduct table rows and based on the idProd column 
+            $products = array();
+            foreach ($orderProduct as $row) {
+                // Get the product data
+                $product = $this->productModel->getProductById($row->idProd);
+                $tempArray = array();
+                $tempArray['product'] = $product;
+                $tempArray['quantity'] = $row->quantity;
+                array_push($products, $tempArray);
+
+                // Calc the total price for the order
+                $total += $product->finalPrice;
+            }
+
+
+            // Set Data
+            $data = [
+                'products' => $products,
+                'total' => $total,
+                'orderId' => $activeOrder->id,
+                'clientId' => $clientId
+            ];
+            // $products = $data['products'];
+            // echo "<pre>";
+            // foreach ($products as $product) {
+            //     echo($product['quantity']);
+            // }
+            // echo "<pre><hr>";
+            // die("Die");
+            // echo($data['products'][0]['product']);
+            $this->view('orders/index', $data);
             return;
         } else {
-            die("somthing wrong");
+            //Set Data
+            $data = [];
+            // Load homepage/index view
+            $this->view('pages/index', $data);
         }
-        //Set Data
-        $data = [];
-        // Load homepage/index view
-        $this->view('pages/index', $data);
     }
+
 
     public function add()
     {
@@ -86,17 +126,18 @@ class Orders extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize POST
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-            $quantity = $_POST['quantity'] ?? 1;
             $product = $this->productModel->getProductById($_POST['id']);
-            // $today = date('Y-m-d');
-            // $oneDayLater = date('Y-m-d', strtotime($today . ' +1 day'));
-            // $TwoDaysLater = date('Y-m-d', strtotime($oneDayLater . ' +1 day'));
 
-            // Before add prodct to the order let's check if the client alredy have started another order
-            // if so,
-            // we can create a new order just when the last order status is Created
+            // Explination
             /*
+                // $today = date('Y-m-d');
+                // $oneDayLater = date('Y-m-d', strtotime($today . ' +1 day'));
+                // $TwoDaysLater = date('Y-m-d', strtotime($oneDayLater . ' +1 day'));
+
+                // Before add prodct to the order let's check if the client alredy have started another order
+                // if so,
+                // we can create a new order just when the last order status is Created
+                
                 if we have an order in the _order table for the client and it's status is 'notValid'
                 => we will add the product to the same product
                 else {
@@ -121,55 +162,96 @@ class Orders extends Controller
                 
             */
 
-            $data = [
-                'idAdmin' => $product->idAdmin,
-                'idClient' => $_SESSION['user_id'],
-                'reference' => $this->generateRandomString(),
-            ];
-
-            $activeOrder = $this->orderModel->getActiveOrder($data['idClient'])[0];
-
-            if (empty($activeOrder)) {
-                // die("Have no order yet");
-                // Create it  => status = notValid
-
-                // Add the product to the orderproduct
-            } else if ($activeOrder->status == 'notValid') {
-                die("Already have an order but not valid yet"); // means that the user not buy the order yet to close it
-                // Add the product to the orderproduct
+            $clientId = $_SESSION['user_id'];
+            $activeOrder = [];
+            // Check if we have any active Order for the actual Client
+            if ($this->orderModel->getActiveOrder($clientId)) {
+                $activeOrder = $this->orderModel->getActiveOrder($clientId)[0];
             }
+            $quantity = $_POST['quantity'] ?? 1;
+            if (empty($activeOrder)) {
+                // Create it  => status = notValid
+                $data = [
+                    //Data to create a new _order
+                    'idAdmin' => $product->idAdmin,
+                    'idClient' => $_SESSION['user_id'],
+                    'reference' => $this->generateRandomString(),
+                ];
+                //Execute
+                try {
+                    // Create a new Order
+                    $this->orderModel->addOrder($data);
 
-            die("Done");
+                    // Get the order after create it => Just to take the new order row id [idOrder]
+                    $activeOrder = $this->orderModel->getActiveOrder($clientId)[0];
+                    $data = [
+                        //Data to add a product to an existing order
+                        'idProd' => $product->id,
+                        'idOrder' => $activeOrder->id,
+                        'unitPrice' => $product->finalPrice,
+                        'quantity' => $quantity,
+                        'prodTotalPrice' => ($quantity * $product->finalPrice),
+                    ];
+                    // Check if it already exist in orderProduct table
+                    if ($this->orderProductModel->getOrderProductByIds($data['idOrder'], $data['idProd'])) {
+                        // If So  => Update the Quantity
+                        $this->orderModel->updateOrderProduct($data['idOrder'], $data['idProd'], $data['quantity']);
+                    } else {
+                        // If not => Add the product to the new Order
+                        $this->orderProductModel->addOrderProduct($data);
+                    }
 
-            // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            $data = [
-                'idAdmin' => $product->idAdmin,
-                'idClient' => $_SESSION['user_id'],
-                'reference' => $this->generateRandomString(),
-                'orderTotalPrice' => $product->finalPrice * $quantity,
-                // 'creationDate' => $today,
-                // 'dispatchDate' => $oneDayLater,
-                // 'deliveryDate' => $TwoDaysLater
-            ];
-            //Execute
-            try {
-                if ($this->orderModel->newOrder($data)) {
                     // Redirect to Products
                     flash('order_added', 'Order Added');
                     redirect('pages/products');
-                } else {
-                    die('Something went wrong');
-                }
-            } catch (\Throwable $th) {
-                $products = $this->productModel->getVisibleProducts();
-                $categories = $this->categoryModel->getCategories();
-                $data = [
-                    'products' => $products,
-                    'categories' => $categories
-                ];
+                } catch (\Throwable $th) {
+                    $products = $this->productModel->getVisibleProducts();
+                    $categories = $this->categoryModel->getCategories();
+                    $data = [
+                        'products' => $products,
+                        'categories' => $categories
+                    ];
 
-                // Load about view
-                $this->view('pages/products', $data);
+                    // Load products out view
+                    $this->view('pages/products', $data);
+                }
+
+                // Add the product to the orderproduct
+            } else if ($activeOrder->status == 'notValid') {
+                $data = [
+                    //Data to add a product to an existing order
+                    'idProd' => $product->id,
+                    'idOrder' => $activeOrder->id,
+                    'unitPrice' => $product->finalPrice,
+                    'quantity' => $quantity,
+                    'prodTotalPrice' => ($quantity * $product->finalPrice),
+                ];
+                //Execute
+                try {
+
+                    // Check if it already exist in orderProduct table
+                    if ($this->orderProductModel->getOrderProductByIds($data['idOrder'], $data['idProd'])) {
+                        // If So  => Update the Quantity
+                        $this->orderProductModel->updateOrderProduct($data['idOrder'], $data['idProd'], $data['quantity']);
+                        // die("True");
+                    } else {
+                        // If not => Add the product to the new Order
+                        $this->orderProductModel->addOrderProduct($data);
+                    }
+                    // Redirect to Products
+                    flash('order_added', 'Order Added');
+                    redirect('pages/products');
+                } catch (\Throwable $th) {
+                    $products = $this->productModel->getVisibleProducts();
+                    $categories = $this->categoryModel->getCategories();
+                    $data = [
+                        'products' => $products,
+                        'categories' => $categories
+                    ];
+
+                    // Load products view
+                    $this->view('pages/products', $data);
+                }
             }
         } else {
             $data = [];

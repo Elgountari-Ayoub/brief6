@@ -1,5 +1,5 @@
 <?php
-class Order
+class OrderProduct
 {
   private $db;
 
@@ -11,69 +11,40 @@ class Order
   // _order table columns
   // 	id	idAdmin	idClient	reference	orderTotalPrice	creationDate	dispatchDate	deliveryDate	
 
-  // Get All Orders
-  public function getOrders()
+  // Get All OrderProduct data
+  public function getOrderProduct()
   {
-    $this->db->query("SELECT * FROM _order ");
+    $this->db->query("SELECT * FROM orderproduct ");
 
     $results = $this->db->resultset();
 
     return $results;
   }
 
-  // Get Order By ID
-  public function getOrderById($id)
+  // Get Order By Order, Product ID
+  public function getOrderProductByIds($orderId, $productId)
   {
-    $this->db->query("SELECT * FROM _order WHERE id = :id");
+    $this->db->query("SELECT * FROM orderproduct WHERE idProd = :idProd and idOrder = :idOrder");
 
-    $this->db->bind(':id', $id);
+    $this->db->bind(':idProd', $productId);
+    $this->db->bind(':idOrder', $orderId);
 
     $row = $this->db->single();
 
     return $row;
   }
-  // Get Order By ID
-  public function getActiveOrder($clientId)
-  {
-    $this->db->query("
-    select o.* from _order o, client c where c.id = o.idClient and o.idClient = :id and STATUS = 'notValid'
-    ");
 
-    $this->db->bind(':id', $clientId);
+  public function getOrderProductByOrderId($orderId){
+    $this->db->query("SELECT * from orderproduct WHERE idOrder = :orderId");
+    $this->db->bind(":orderId", $orderId);
+
     $results = $this->db->resultset();
 
     return $results;
   }
 
-  // new Order
-  public function addOrder($data)
-  {
-    // Prepare Query
-    $this->db->query("INSERT INTO _order
-        (idAdmin, 
-        idClient, 
-        reference, 
-        status) 
-        VALUES (
-          :idAdmin ,
-          :idClient ,
-          :reference ,
-          :status)");
-    // Bind Values
-    $this->db->bind(':idAdmin',         $data['idAdmin']);
-    $this->db->bind(':idClient',        $data['idClient']);
-    $this->db->bind(':reference',       $data['reference']);
-    $this->db->bind(':status',          'notValid');
-
-    //Execute
-    if ($this->db->execute()) {
-      return true;
-    } else {
-      return false;
-    }
-  }
   // Add Order => we call this methos when the last order was not valid
-  public function ShitOrder($data)
+  public function addOrderProduct($data)
   {
     // Prepare Query
     $this->db->query
@@ -97,16 +68,16 @@ class Order
 
   // CkeckOut
 
-  // Update Order
-  public function updateOrder($data)
+  // Update OrderProduct
+  public function updateOrderProduct($idOrder, $idProd, $quantity)
   {
     // Prepare Query
-    $this->db->query('UPDATE Orders SET title = :title, body = :body WHERE id = :id');
+    $this->db->query('UPDATE orderproduct SET quantity = quantity + :quantity WHERE idOrder = :idOrder and idProd = :idProd');
 
     // Bind Values
-    $this->db->bind(':id', $data['id']);
-    $this->db->bind(':title', $data['title']);
-    $this->db->bind(':body', $data['body']);
+    $this->db->bind(':idOrder', $idOrder);  
+    $this->db->bind(':idProd', $idProd);
+    $this->db->bind(':quantity', $quantity);
 
     //Execute
     if ($this->db->execute()) {
