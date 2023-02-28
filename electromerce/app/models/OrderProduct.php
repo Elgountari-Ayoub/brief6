@@ -69,16 +69,17 @@ class OrderProduct
   // CkeckOut
 
   // Update OrderProduct
-  public function updateOrderProduct($idOrder, $idProd, $quantity)
+  public function updateOrderProduct($data)
   {
     // Prepare Query
-    $this->db->query('UPDATE orderproduct SET quantity = quantity + :quantity WHERE idOrder = :idOrder and idProd = :idProd');
-
+    $this->db->query('UPDATE orderproduct SET quantity =  :quantity , prodTotalPrice = :prodTotalPrice WHERE idOrder = :idOrder and idProd = :idProd');
+    
     // Bind Values
-    $this->db->bind(':idOrder', $idOrder);  
-    $this->db->bind(':idProd', $idProd);
-    $this->db->bind(':quantity', $quantity);
-
+    $this->db->bind(':idOrder', $data['idOrder']);  
+    $this->db->bind(':idProd', $data['idProd']);
+    $this->db->bind(':quantity', $data['quantity']);
+    $this->db->bind(':prodTotalPrice', $data['prodTotalPrice']);
+    
     //Execute
     if ($this->db->execute()) {
       return true;
@@ -88,13 +89,14 @@ class OrderProduct
   }
 
   // Delete Order
-  public function deleteOrder($id)
+  public function deleteOrderProduct($data)
   {
     // Prepare Query
-    $this->db->query('DELETE FROM _order WHERE id = :id');
+    $this->db->query('DELETE FROM orderproduct WHERE idProd = :idProd and idOrder = :idOrder');
 
     // Bind Values
-    $this->db->bind(':id', $id);
+    $this->db->bind(':idOrder', $data['orderId']);
+    $this->db->bind(':idProd', $data['prodId']);
 
     //Execute
     if ($this->db->execute()) {
