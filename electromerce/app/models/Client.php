@@ -35,4 +35,12 @@ class Client extends User
     $clients = $this->db->resultset();
     return $clients;
   }
+  public function getClienyById($id){
+    $this->db->query("SELECT * from client where id = :id");
+
+    $this->db->bind(":id", $id);
+    
+    $row = $this->db->single();
+    return $row;
+  }
 }

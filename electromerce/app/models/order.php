@@ -21,6 +21,23 @@ class Order
     return $results;
   }
 
+  // Update order total price
+  public function updateOrderTotalPrice($data)
+  {
+    // Prepare Query
+    $this->db->query('UPDATE _order SET orderTotalPrice = :orderTotalPrice WHERE idClient = :idClient');
+
+    // Bind Values
+    $this->db->bind(':idClient', $data['idClient']);
+    $this->db->bind(':orderTotalPrice', $data['orderTotalPrice']);
+
+    //Execute
+    if ($this->db->execute()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   // Get Order By ID
   public function getOrderById($id)
   {
@@ -53,18 +70,21 @@ class Order
         (idAdmin, 
         idClient, 
         reference, 
+        orderTotalPrice,
         status) 
         VALUES (
           :idAdmin ,
           :idClient ,
           :reference ,
+          :orderTotalPrice,
           :status)");
     // Bind Values
-    $this->db->bind(':idAdmin',         $data['idAdmin']);
-    $this->db->bind(':idClient',        $data['idClient']);
-    $this->db->bind(':reference',       $data['reference']);
-    $this->db->bind(':status',          'notValid');
-
+    $this->db->bind(':idAdmin',           $data['idAdmin']);
+    $this->db->bind(':idClient',          $data['idClient']);
+    $this->db->bind(':reference',         $data['reference']);
+    $this->db->bind(':orderTotalPrice',  $data['orderTotalPrice']);
+    $this->db->bind(':status',            $data['status']);
+    
     //Execute
     if ($this->db->execute()) {
       return true;
@@ -76,8 +96,7 @@ class Order
   public function ShitOrder($data)
   {
     // Prepare Query
-    $this->db->query
-      ("INSERT into orderproduct (idProd,	idOrder,	unitPrice,	quantity, prodTotalPrice)
+    $this->db->query("INSERT into orderproduct (idProd,	idOrder,	unitPrice,	quantity, prodTotalPrice)
         VALUES (:idProd, :idOrder, :unitPrice, :quantity, :prodTotalPrice);
       ");
     // Bind Values
@@ -86,7 +105,7 @@ class Order
     $this->db->bind(':unitPrice',     $data['unitPrice']);
     $this->db->bind(':quantity',      $data['quantity']);
     $this->db->bind(':prodTotalPrice', $data['prodTotalPrice']);
-    
+
     //Execute
     if ($this->db->execute()) {
       return true;
@@ -100,13 +119,24 @@ class Order
   // Update Order
   public function updateOrder($data)
   {
+
+
     // Prepare Query
-    $this->db->query('UPDATE Orders SET title = :title, body = :body WHERE id = :id');
+    $this->db->query('UPDATE _order SET 
+                    orderTotalPrice =  :orderTotalPrice,	
+                        creationDate = :creationDate,	
+                        dispatchDate = :dispatchDate,	
+                        deliveryDate = :deliveryDate,	
+                        status = :status
+                      WHERE id = :id');
 
     // Bind Values
+    $this->db->bind(':orderTotalPrice', $data['orderTotalPrice']);
+    $this->db->bind(':creationDate', $data['creationDate']);
+    $this->db->bind(':dispatchDate', $data['dispatchDate']);
+    $this->db->bind(':deliveryDate', $data['deliveryDate']);
+    $this->db->bind(':status', $data['status']);
     $this->db->bind(':id', $data['id']);
-    $this->db->bind(':title', $data['title']);
-    $this->db->bind(':body', $data['body']);
 
     //Execute
     if ($this->db->execute()) {
@@ -114,6 +144,29 @@ class Order
     } else {
       return false;
     }
+  }
+  // Update Order
+  public function addToOrderTotalPrice($data)
+  {
+    print_r($data);
+    // Prepare Query
+    $this->db->query('UPDATE _order SET 
+                    orderTotalPrice =  orderTotalPrice + :prodTotalPrice
+                      WHERE id = :id');
+
+// Bind Values
+$this->db->bind(':orderTotalPrice', $data['prodTotalPrice']);
+$this->db->bind(':id', $data['idOrder']);
+
+//Execute
+if ($this->db->execute()) {
+      die("updated gg");
+      return true;
+    } else {
+      die("not updated");
+      return false;
+    }
+    die("updated");
   }
 
   // Delete Order

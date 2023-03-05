@@ -34,7 +34,8 @@ class OrderProduct
     return $row;
   }
 
-  public function getOrderProductByOrderId($orderId){
+  public function getOrderProductByOrderId($orderId)
+  {
     $this->db->query("SELECT * from orderproduct WHERE idOrder = :orderId");
     $this->db->bind(":orderId", $orderId);
 
@@ -47,8 +48,7 @@ class OrderProduct
   public function addOrderProduct($data)
   {
     // Prepare Query
-    $this->db->query
-      ("INSERT into orderproduct (idProd,	idOrder,	unitPrice,	quantity, prodTotalPrice)
+    $this->db->query("INSERT into orderproduct (idProd,	idOrder,	unitPrice,	quantity, prodTotalPrice)
         VALUES (:idProd, :idOrder, :unitPrice, :quantity, :prodTotalPrice);
       ");
     // Bind Values
@@ -57,7 +57,7 @@ class OrderProduct
     $this->db->bind(':unitPrice',     $data['unitPrice']);
     $this->db->bind(':quantity',      $data['quantity']);
     $this->db->bind(':prodTotalPrice', $data['prodTotalPrice']);
-    
+
     //Execute
     if ($this->db->execute()) {
       return true;
@@ -72,14 +72,32 @@ class OrderProduct
   public function updateOrderProduct($data)
   {
     // Prepare Query
-    $this->db->query('UPDATE orderproduct SET quantity =  :quantity , prodTotalPrice = :prodTotalPrice WHERE idOrder = :idOrder and idProd = :idProd');
-    
+    $this->db->query('UPDATE orderproduct SET quantity =  quantity + :quantity , prodTotalPrice = :prodTotalPrice WHERE idOrder = :idOrder and idProd = :idProd');
+
     // Bind Values
-    $this->db->bind(':idOrder', $data['idOrder']);  
+    $this->db->bind(':idOrder', $data['idOrder']);
     $this->db->bind(':idProd', $data['idProd']);
     $this->db->bind(':quantity', $data['quantity']);
     $this->db->bind(':prodTotalPrice', $data['prodTotalPrice']);
-    
+
+    //Execute
+    if ($this->db->execute()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  public function editOrderProduct($data)
+  {
+    // Prepare Query
+    $this->db->query('UPDATE orderproduct SET quantity =  :quantity , prodTotalPrice = :prodTotalPrice WHERE idOrder = :idOrder and idProd = :idProd');
+
+    // Bind Values
+    $this->db->bind(':idOrder', $data['idOrder']);
+    $this->db->bind(':idProd', $data['idProd']);
+    $this->db->bind(':quantity', $data['quantity']);
+    $this->db->bind(':prodTotalPrice', $data['prodTotalPrice']);
+
     //Execute
     if ($this->db->execute()) {
       return true;

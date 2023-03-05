@@ -15,7 +15,7 @@ $products = $data['products']
               <div class="text-gray-600 mb-2">$<?= $product['product']->finalPrice ?>.00</div>
             </div>
             <div class="flex items-center mb-4">
-              <form class="mb-6" action="<?php echo URLROOT; ?>/orders/updateOrderProductQuantity" method="post">
+              <form class="mb-6" action="<?php echo URLROOT; ?>/orders/editOrderProductQuantity" method="post">
                 <input min="1" type="number" name="quantity" value="<?= $product['quantity'] ?? 1 ?>" class=" appearance-none border rounded w-16 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline-blue" />
                 <input type="hidden" name="prodId" value="<?= $product['product']->id ?>">
                 <input type="hidden" name="orderId" value="<?= $data['orderId'] ?>">
