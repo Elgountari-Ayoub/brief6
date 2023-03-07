@@ -52,10 +52,10 @@ class OrderProduct
         VALUES (:idProd, :idOrder, :unitPrice, :quantity, :prodTotalPrice);
       ");
     // Bind Values
-    $this->db->bind(':idProd',        $data['idProd']);
-    $this->db->bind(':idOrder',       $data['idOrder']);
-    $this->db->bind(':unitPrice',     $data['unitPrice']);
-    $this->db->bind(':quantity',      $data['quantity']);
+    $this->db->bind(':idProd',         $data['idProd']);
+    $this->db->bind(':idOrder',        $data['idOrder']);
+    $this->db->bind(':unitPrice',      $data['unitPrice']);
+    $this->db->bind(':quantity',       $data['quantity']);
     $this->db->bind(':prodTotalPrice', $data['prodTotalPrice']);
 
     //Execute
@@ -69,10 +69,12 @@ class OrderProduct
   // CkeckOut
 
   // Update OrderProduct
-  public function updateOrderProduct($data)
+  public function updateOrderProductQuantity($data)
   {
+    // print_r($data);
+    // die("!Empty");
     // Prepare Query
-    $this->db->query('UPDATE orderproduct SET quantity =  quantity + :quantity , prodTotalPrice = :prodTotalPrice WHERE idOrder = :idOrder and idProd = :idProd');
+    $this->db->query('UPDATE orderproduct SET quantity =  quantity + :quantity , prodTotalPrice = prodTotalPrice + :prodTotalPrice WHERE idOrder = :idOrder and idProd = :idProd');
 
     // Bind Values
     $this->db->bind(':idOrder', $data['idOrder']);
@@ -113,8 +115,8 @@ class OrderProduct
     $this->db->query('DELETE FROM orderproduct WHERE idProd = :idProd and idOrder = :idOrder');
 
     // Bind Values
-    $this->db->bind(':idOrder', $data['orderId']);
-    $this->db->bind(':idProd', $data['prodId']);
+    $this->db->bind(':idOrder', $data['idOrder']);
+    $this->db->bind(':idProd', $data['idProd']);
 
     //Execute
     if ($this->db->execute()) {
