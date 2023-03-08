@@ -62,6 +62,7 @@ class Orders extends Controller
             // var_dump($data['clientNames']) . "<br>";
             // die("ddd");
         */
+
         if ($this->isAdmin()) {
             // Set Data
             // $orders = $this->orderModel->getOrders();
@@ -136,14 +137,18 @@ class Orders extends Controller
                 'total' => $total,
                 'orderId' => $activeOrder->id,
             ];
-            // $products = $data['products'];
-            // echo "<pre>";
-            // foreach ($products as $product) {
-            //     echo($product['quantity']);
-            // }
-            // echo "<pre><hr>";
-            // die("Die");
-            // echo($data['products'][0]['product']);
+
+            //Commented code
+            {
+                // $products = $data['products'];
+                // echo "<pre>";
+                // foreach ($products as $product) {
+                //     echo($product['quantity']);
+                // }
+                // echo "<pre><hr>";
+                // die("Die");
+                // echo($data['products'][0]['product']);
+            }
             $this->view('orders/index', $data);
             return;
         } else {
@@ -388,15 +393,12 @@ class Orders extends Controller
             ];
             $status = trim($_GET['status']);
             if ($status == 'validByClient') {
-                // print_r($_GET);
-                // die("!empty");
                 // set the creation date
                 $data['creationDate'] =  date("Y/m/d");
-            }
-            elseif ($status == 'dispatched') {
+            } elseif ($status == 'dispatched') {
                 // set the dispatchDate date
                 $data['dispatchDate'] =  date("Y/m/d");
-            }elseif ($status == 'delivered') {
+            } elseif ($status == 'delivered') {
                 // set the deliveryDate date
                 $data['deliveryDate'] =  date("Y/m/d");
             }
@@ -408,16 +410,68 @@ class Orders extends Controller
             redirect('orders/index', $data);
         }
     }
+    
+
     public function checkOut()
     {
         /*
+         * check for authentication
          * take the [clientId, orderId]
          * change the order status from complet to validByClient
          * fill the creationDate => today
          * add this order to the previews orders at the orders/index page (client)
-         * 
          */
+
+        //check for authentication
+        if (!$this->isLoggedIn()) {
+            //Set Data
+            $data = [];
+            // Load view
+            $this->view('pages/products', $data);
+            return;
+        }
+
+        // The real work
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize POST
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $orderId = $_POST['id'];
+            $orderProduct = $this->orderProductModel->getOrderProductByOrderId($orderId);
+            $products = array();
+            $total = 0;
+            foreach ($orderProduct as $row) {
+                // Get the product data
+                $product = $this->productModel->getProductById($row->idProd);
+                $tempArray = array();
+                $tempArray['product'] = $product;
+                $tempArray['quantity'] = $row->quantity;
+                $tempArray['total'] = $product->finalPrice * $row->quantity;
+                array_push($products, $tempArray);
+
+                // Calc the total price for the order
+                $total += $product->finalPrice * $row->quantity;
+            }
+            $data = [
+                'products' => $products,
+                'orderId' => $orderId,
+                'total' => $total
+            ];
+
+            $this->view('orders/checkOut', $data);
+            // echo "<pre>";
+            // print_r($data);
+            // echo "<pre>";
+            // die("!empty");
+
+        } else {
+            //Set Data
+            $data = array();
+            // Load checkOut view
+            $this->view('pages/index', $data);
+        }
     }
+
+
 
 
 

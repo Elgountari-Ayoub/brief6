@@ -1,4 +1,27 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<div class="flex justify-around">
+<div class="mx-4">
+  <button id="dropdownDefault" data-dropdown-toggle="dropdown2" class="mx-8 text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center" type="button">
+    Price
+    <svg class="ml-2 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+  <!-- Dropdown menu -->
+  <div id="dropdown2" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
+    <ul class="mx-4 py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
+      <li>
+        <a href="<?php echo URLROOT . '/pages/products/' ?>" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Time Added</a>
+      </li>
+        <li>
+          <a href="<?php echo URLROOT . '/pages/products/-1/expensive'?>" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">expensive to the cheapest</a>
+        </li>
+        <li>
+          <a href="<?php echo URLROOT . '/pages/products/-1/cheapest'?>" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">cheapest to the expensive</a>
+        </li>
+    </ul>
+  </div>
+</div>
 <div class="mx-4">
   <button id="dropdownDefault" data-dropdown-toggle="dropdown1" class="mx-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
     Categories
@@ -7,8 +30,6 @@
     </svg>
   </button>
   <!-- Dropdown menu -->
-  <?php //var_dump($data['categories'])
-  ?>
   <div id="dropdown1" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
     <ul class="mx-4 py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
       <li>
@@ -22,7 +43,7 @@
     </ul>
   </div>
 </div>
-
+</div>
 
 <!-- Products Page for Electronic Store Website -->
 <div class="bg-white min-h-screen p-8">

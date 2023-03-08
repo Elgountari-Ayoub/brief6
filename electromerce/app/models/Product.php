@@ -18,9 +18,9 @@ class Product
     return $results;
   }
   // Get Visible Products
-  public function getVisibleProducts()
+  public function getVisibleProducts($sort)
   {
-    $this->db->query("SELECT p.*, c.name as 'categorey' FROM product p, category c where p.idCat = c.id and visibility = 1");
+    $this->db->query("SELECT p.*, c.name as 'categorey' FROM product p, category c where p.idCat = c.id and visibility = 1 ORDER BY p.finalPrice $sort");
 
     $results = $this->db->resultset();
 
@@ -55,11 +55,10 @@ class Product
     $result = $this->db->resultset();
     return $result;
   }
-  public function getVisibleProductsByCategoryId($id) {
-    $this->db->query("SELECT p.* FROM product p, category c WHERE p.idCat = c.id and c.id = :id  and visibility = 1");
+  public function getVisibleProductsByCategoryId($id, $sort) {
+    $this->db->query("SELECT p.* FROM product p, category c WHERE p.idCat = c.id and c.id = :id  and visibility = 1 ORDER BY p.finalPrice $sort");
 
     $this->db->bind(':id', $id);
-
     $result = $this->db->resultset();
     return $result;
   }

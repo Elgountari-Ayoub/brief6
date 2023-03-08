@@ -14,6 +14,7 @@ class Core
   public function __construct()
   {
     $url = $this->getUrl();
+
     // Look in controllers folder for controller
     if (isset($url[0])) {
       if (file_exists('../app/controllers/' . ucwords($url[0]) . '.php')) {
@@ -40,11 +41,8 @@ class Core
         unset($url[1]);
       }
     }
-
-
     // Get params - Any values left over in url are params
-    $this->params = $url ? array_values($url) : [];
-
+    $this->params = $url ? array_values($url) : []; 
     // Call a callback with an array of parameters
     call_user_func_array([$this->currentController, $this->currentMethod], $this->params);
   }

@@ -34,15 +34,21 @@ $products = $data['products'];
             </div>
           <?php endforeach ?>
         <?php endif ?>
-        <p></p>
-        <div class="flex justify-between gap-8">
-          <span class="px-4 py-2 font-bold text-white bg-green-500 rounded-t-lg mr-2 mb-2">Total = $ <?= $data['total'] ?></span>
-          <a href="<?php echo URLROOT; ?>/pages/products" class="px-4 py-2 font-bold text-white bg-yellow-500 h-fit rounded-t-lg mr-2 mb-2"> Continue Shipping</a>
-          <form class="mb-6" action="<?php echo URLROOT . '/orders/updateOrderStatus' ?>" method="get">
-            <input type="hidden" name="id" value="<?= $data['orderId'] ?? -1?>">
-            <input type="hidden" name="status" value="validByClient">
-            <input type="submit" value="Valid" class="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline active:bg-blue-800">
-          </form>
+        <div class="flex justify-between mt-2">
+          <span class="px-2 py-2  font-bold">Total = $<?= $data['total'] ?></span>
+          <a href="<?php echo URLROOT; ?>/pages/products" class="text-blue-600 px-2 py-2 border-b-2 border-cyan-300">Continue Shipping&rarr;</a>
+          <!-- <a href="<?php //echo URLROOT; 
+                        ?>/pages/checkOut" class="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline active:bg-blue-800">checkOut</a> -->
+          <!-- -------------------- -->
+          <?php if (count($products) > 0) : ?>
+            <form class="" action="<?php echo URLROOT . '/orders/checkOut' ?>" method="post">
+              <input type="hidden" name="id" value="<?= $data['orderId'] ?? -1 ?>">
+              <!-- <input type="hidden" name="status" value="validByClient"> -->
+              <input type="submit" value="CheckOut" class="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline active:bg-blue-800">
+            </form>
+          <?php endif ?>
+
+          <!-- -------------------- -->
         </div>
       </div>
     </div>

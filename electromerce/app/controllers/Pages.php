@@ -54,23 +54,32 @@ class Pages extends Controller
     // Load about view
     $this->view('pages/register', $data);
   }
-  public function products($id = -1)
+  public function products($id = -1, $priceFilter = '')
   {
+    // echo $id."<hr>".$priceFilter;
+    // die("!");
+    $sort = '';
+    if (!empty($priceFilter)) {
+      if ($priceFilter == 'expensive') {
+        $sort = 'DESC';
+      } elseIF($priceFilter == 'cheapest'){
+        $sort = 'ASC';
+      }
+    }
+    die("$sort");
+
     if ($id != -1) {
-      $products = $this->productModel->getVisibleProductsByCategoryId($id);
+      $products = $this->productModel->getVisibleProductsByCategoryId($id, $sort);
       $categories = $this->categoryModel->getCategories();
-      $data = [
-        'products' => $products,
-        'categories' => $categories
-      ];
     } else {
-      $products = $this->productModel->getVisibleProducts();
+      $products = $this->productModel->getVisibleProducts($sort);
       $categories = $this->categoryModel->getCategories();
     }
     $data = [
       'products' => $products,
       'categories' => $categories
     ];
+
 
     // Load about view
     $this->view('pages/products', $data);

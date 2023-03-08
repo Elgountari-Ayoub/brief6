@@ -1,19 +1,36 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<?php $products = $data['products']; ?>
 <div class="container mx-auto p-8">
   <div class="flex flex-wrap -mx-4">
     <div class="w-full md:w-1/2 px-4 mb-8 md:mb-0 relative flex flex-wrap flex-col justify-between">
       <h2 class="text-xl font-bold mb-4">Order details</h2>
-      <ul class="list-disc pl-4 flex justify-between list-none">
-        <li>Product name: iPhone 13</li>
-        <li>Price: $999</li>
-        <li>Quantity: 1</li>
-        <li>Total: $999</li>
-      </ul>
+      <table class="table-auto w-full">
+        <thead>
+          <tr>
+            <th class="px-4 py-2">name</th>
+            <th class="px-4 py-2">Price</th>
+            <th class="px-4 py-2 w-1/10">Quantity</th>
+            <th class="px-4 py-2">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (count($products) > 0) : ?>
+            <?php foreach ($products as $product) : ?>
+              <tr class="text-center">
+                <td class="border px-4 py-2"> <?= $product['product']->title ?></td>
+                <td class="border px-4 py-2">$<?= $product['product']->finalPrice ?></td>
+                <td class="border px-4 py-2"><?= $product['quantity'] ?></td>
+                <td class="border px-4 py-2">$<?= $product['total'] ?></td>
+              </tr>
+            <?php endforeach ?>
+          <?php endif ?>
+        </tbody>
+      </table>
       <div class="bg-gray-100 rounded-lg p-6 pt-0 mb-auto my-4 ">
         <hr class="my-3">
         <div class="flex justify-between font-bold mb-2">
           <span>Total:</span>
-          <span>$84.99</span>
+          <span>$<?= $data['total'] ?></span>
         </div>
       </div>
     </div>
@@ -92,11 +109,11 @@
           </div>
         </div>
         <div class="flex flex-wrap -mx-3 mb-4">
-          <div class="w-full px-3">
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-              Place order
-            </button>
-          </div>
+          <!-- <div class="w-full px-3"> -->
+          <a href="<?php echo URLROOT . '/orders/updateOrderStatus?status=validByClient&id=' . $data['orderId'] ?>" class="bg-green-500 text-white py-2 px-4 rounded-full my-4">
+            Validate
+          </a>
+          <!-- </div> -->
         </div>
       </form>
     </div>

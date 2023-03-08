@@ -72,13 +72,13 @@
         <?php } elseif ($data['orders'][$i]->status == 'validByAdmin') { ?>
           <td class="border px-2 py-2 flex justify-around">
             <a href="<?php echo URLROOT . '/orders/updateOrderStatus?status=dispatched&id=' . $data['orders'][$i]->id ?>" class="bg-green-500 text-white py-2 px-4 rounded-full my-4">
-              Dispatch
+              Dispatched
             </a>
           </td>
         <?php } elseif ($data['orders'][$i]->status == 'dispatched') { ?>
           <td class="border px-2 py-2 flex justify-around">
             <a href="<?php echo URLROOT . '/orders/updateOrderStatus?status=delivered&id=' . $data['orders'][$i]->id ?>" class="bg-green-500 text-white py-2 px-4 rounded-full my-4">
-              Deliver
+            Delivered
             </a>
           </td>
         <?php } elseif ($data['orders'][$i]->status == 'delivered') { ?>
