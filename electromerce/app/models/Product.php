@@ -27,6 +27,42 @@ class Product
     return $results;
   }
 
+  public function getProductsByPage($page, $per_page)
+  {
+    // Calculate the offset for the SQL query
+    $offset = ($page - 1) * $per_page;
+
+    // Retrieve the products for the current page
+    //SELECT * FROM products
+    //ORDER BY p.finalPrice $sort
+    $products = $this->db->query(" SELECT p.*, c.name as 'categorey' 
+                                  FROM product p, category c
+                                  where p.idCat = c.id and visibility = 1 
+                                  LIMIT $per_page OFFSET $offset");
+    $products = $this->db->resultset();
+
+    // Retrieve the total number of products
+    $total_products = $this->db->query("SELECT COUNT(*) as total_products FROM product p, category c
+                                        where p.idCat = c.id");
+    $total_products = $this->db->single();
+
+    // Return the products and total number of products
+    $result =  [
+      'products' => $products,
+      'total_products' => $total_products
+    ];
+    // echo "<pre>";
+    // print_r($result);
+    // echo "<pre>";
+    // die("Product Model");
+
+    return [
+      'products' => $products,
+      'total_products' => $total_products
+    ];
+  }
+
+
   // Get Category By ID
   public function getProductById($id)
   {
@@ -38,7 +74,8 @@ class Product
     return $row;
   }
   // Get Category Name By ID
-  public function getCategoryNameByProductId($id) {
+  public function getCategoryNameByProductId($id)
+  {
     $this->db->query("SELECT c.name FROM category c, product p WHERE c.id = p.idCat AND p.id = :id");
 
     $this->db->bind(':id', $id);
@@ -47,7 +84,8 @@ class Product
     return $row;
   }
 
-  public function getProductsByCategoryId($id) {
+  public function getProductsByCategoryId($id)
+  {
     $this->db->query("SELECT p.* FROM product p, category c WHERE p.idCat = c.id and c.id = :id");
 
     $this->db->bind(':id', $id);
@@ -55,7 +93,8 @@ class Product
     $result = $this->db->resultset();
     return $result;
   }
-  public function getVisibleProductsByCategoryId($id, $sort) {
+  public function getVisibleProductsByCategoryId($id, $sort)
+  {
     $this->db->query("SELECT p.* FROM product p, category c WHERE p.idCat = c.id and c.id = :id  and visibility = 1 ORDER BY p.finalPrice $sort");
 
     $this->db->bind(':id', $id);

@@ -56,29 +56,61 @@ class Pages extends Controller
   }
   public function products($id = -1, $priceFilter = '')
   {
-    // echo $id."<hr>".$priceFilter;
-    // die("!");
+    //per_page
+    //total_products
+    // Retrieve the current page number from the URL parameter
+    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+    // Set the number of products per page
+    $per_page = 3;
+
+    // Create a new instance of the product model
+    $productModel = $this->productModel;
+
+    // Retrieve the products for the current page
+    $productsData = $productModel->getProductsByPage($page, $per_page);
+
+    // Pass the data to the view
+    $products = $productsData['products'];
+    $total_products = $productsData['total_products'];
+
+
+    // require_once('views/products.php');
+
     $sort = '';
     if (!empty($priceFilter)) {
       if ($priceFilter == 'expensive') {
         $sort = 'DESC';
-      } elseIF($priceFilter == 'cheapest'){
+      } elseif ($priceFilter == 'cheapest') {
         $sort = 'ASC';
       }
     }
-    die("$sort");
 
+    // Pass the data to the view
+    $products = $productsData['products'];
+    $total_products = $productsData['total_products'];
     if ($id != -1) {
-      $products = $this->productModel->getVisibleProductsByCategoryId($id, $sort);
+      // Retrieve the products for the current page
+      $productsData = $productModel->getProductsByPage($page, $per_page);
+      // $products = $this->productModel->getVisibleProductsByCategoryId($id, $sort);
       $categories = $this->categoryModel->getCategories();
     } else {
-      $products = $this->productModel->getVisibleProducts($sort);
+      // Retrieve the products for the current page
+      $productsData = $productModel->getProductsByPage($page, $per_page);
+      // $products = $this->productModel->getVisibleProducts($sort);
       $categories = $this->categoryModel->getCategories();
     }
     $data = [
       'products' => $products,
-      'categories' => $categories
+      'categories' => $categories,
+      'perPage' => $per_page,
+      'total_products' => $total_products,
+      'page' => $page
     ];
+
+    // echo "<pre>";
+    // print_r($data);
+    // echo "<pre>";
+    // die("product page");
 
 
     // Load about view
